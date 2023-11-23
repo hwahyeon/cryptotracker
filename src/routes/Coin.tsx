@@ -8,15 +8,13 @@ import { useQuery } from "react-query";
 import { Helmet } from "react-helmet";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import Navigator from "../components/Navigator"
+import LoadingBar from "../components/LoadingBar"
 
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
 `;
-const Loader = styled.span`
-  text-align: center;
-  display: block;
-`;
+
 const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
@@ -186,7 +184,7 @@ function Coin() {
         </Title>
       </Header>
       {loading ? (
-        <Loader>Loading...</Loader>
+        <LoadingBar />
       ) : (
         <>
           <Overview>
