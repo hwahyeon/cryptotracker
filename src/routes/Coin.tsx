@@ -7,7 +7,7 @@ import Price from "./Price";
 import { useQuery } from "react-query";
 import { Helmet } from "react-helmet";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
-
+import Navigator from "../components/Navigator"
 
 const Title = styled.h1`
   font-size: 48px;
@@ -179,6 +179,7 @@ function Coin() {
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </title>
       </Helmet>
+      <Navigator />
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
