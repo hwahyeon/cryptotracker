@@ -1,13 +1,11 @@
+import React from 'react';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { styled } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 import { useQuery } from "react-query";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isDarkAtom } from "../atoms";
 import Navigator from "../components/Navigator"
-import LoadingBar from "../components/LoadingBar"
 
 // styled-components
 const Container = styled.div`
@@ -49,15 +47,49 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const Loader = styled.span`
-  text-align: center;
-  display: block;
-`;
-
 const Img = styled.img`
   width: 35px;
   height: 35px;
   margin-right: 10px;
+`;
+
+const shimmer = keyframes`
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+`;
+
+const SkeletonCoin = styled.li`
+  background-color: #eee;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: 1;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+    animation: ${shimmer} 2s infinite;
+  }
+`;
+
+const SkeletonImage = styled.div`
+  width: 35px;
+  height: 35px;
+  background-color: #ddd;
+  border-radius: 50%;
+  margin-right: 10px;
+`;
+
+const SkeletonText = styled.div`
+  width: 100px;
+  height: 16px;
+  background-color: #ddd;
 `;
 
 // interface for TypeScript
@@ -83,23 +115,26 @@ function Coins() {
       </Helmet>
       <Navigator />
       <Header>
-        <Title>Coins</Title>
+        <Title>Cryptotracker</Title>
       </Header>
       {isLoading ? (
-        <LoadingBar />
-        // <Loader>Loading...</Loader>
+        Array.from({ length: 17 }, (_, index) => (
+          <SkeletonCoin key={index}>
+            <SkeletonImage />
+            <SkeletonText />
+          </SkeletonCoin>
+        ))
       ) : (
         <CoinsList>
-          {data?.slice(0, 500).map((coin) => (
-            <Coin key={coin.id}>
-              <Link to={`/${coin.id}`} state={{ name: coin.name }}>
-                <Img
-                  src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
-                />
-                {coin.name}
-              </Link>
-            </Coin>
-          ))}
+          {data?.slice(0, 200).map((coin) => (
+          <Coin key={coin.id}>
+            <Link to={`/${coin.id}`} state={{ name: coin.name }}>
+              <Img
+                src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+              />
+              {coin.name}
+            </Link>
+          </Coin>))}
         </CoinsList>
       )}
     </Container>
