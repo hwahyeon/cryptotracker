@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Coin from "./routes/Coin";
 import Coins from "./routes/Coins";
-import Chart from "./routes/Chart";
-import Price from "./routes/Price";
 
 function Router() {
   return (
@@ -15,4 +13,5 @@ function Router() {
     </BrowserRouter>
   );
 }
+
 export default Router;
