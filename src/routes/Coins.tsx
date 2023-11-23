@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isDarkAtom } from "../atoms";
 import Navigator from "../components/Navigator"
+import LoadingBar from "../components/LoadingBar"
 
 // styled-components
 const Container = styled.div`
@@ -16,7 +17,8 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  height: 15vh;
+  height: 10vh;
+  margin: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,8 +73,6 @@ interface ICoin {
 
 function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
-  const setDarkAtom = useSetRecoilState(isDarkAtom);
-  const toggleDarkAtom = () => setDarkAtom(prev => !prev);
 
   return (
     <Container>
@@ -86,10 +86,11 @@ function Coins() {
         <Title>Coins</Title>
       </Header>
       {isLoading ? (
-        <Loader>Loading...</Loader>
+        <LoadingBar />
+        // <Loader>Loading...</Loader>
       ) : (
         <CoinsList>
-          {data?.slice(0, 7).map((coin) => (
+          {data?.slice(0, 500).map((coin) => (
             <Coin key={coin.id}>
               <Link to={`/${coin.id}`} state={{ name: coin.name }}>
                 <Img
