@@ -81,7 +81,7 @@ const SkeletonCoin = styled.li`
 const SkeletonImage = styled.div`
   width: 35px;
   height: 35px;
-  background-color: #ddd;
+  background-color: #8b8a8a;
   border-radius: 50%;
   margin-right: 10px;
 `;
@@ -89,7 +89,7 @@ const SkeletonImage = styled.div`
 const SkeletonText = styled.div`
   width: 100px;
   height: 16px;
-  background-color: #ddd;
+  background-color: #8b8a8a;
 `;
 
 // interface for TypeScript
