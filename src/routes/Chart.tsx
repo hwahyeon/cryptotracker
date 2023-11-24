@@ -1,87 +1,71 @@
 import { useQuery } from "react-query";
-import { fetchCoinTickers, fetchCoinHistory } from "../api";
+import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
-import LoadingBar from "../components/LoadingBar"
+import LoadingBar from "../components/LoadingBar";
 
 interface IHistorical {
-  time_open: string;
-  time_close: string;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume: number;
+  time_open: number;
+  time_close: number;
+  open: string;
+  high: string;
+  low: string;
+  close: string;
+  volume: string;
   market_cap: number;
 }
 
 interface ChartProps {
   coinId: string;
 }
+
 function Chart({ coinId }: ChartProps) {
-  const { isLoading, data, isError } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
-  fetchCoinHistory(coinId),
+  const { isLoading, data, isError } = useQuery<IHistorical[]>(
+    ["ohlcv", coinId],
+    () => fetchCoinHistory(coinId)
     // {
     //   refetchInterval: 1000,
     // }
   );
 
-  console.log(data)
-
+  const exceptData = data ?? [];
+  const chartData = exceptData?.map((e) => {
+    return {
+      x: new Date(e.time_close * 1000),
+      y: [
+        parseFloat(e.open),
+        parseFloat(e.high),
+        parseFloat(e.low),
+        parseFloat(e.close),
+      ],
+    };
+  });
 
   return (
     <div>
       {isLoading ? (
         <LoadingBar />
-      ) : isError? (
+      ) : isError ? (
         <p>데이터 에러</p>
       ) : (
         <ApexChart
-          type="line"
-          series={[
-            {
-              name: "Price",
-              data: data?.map((price) =>  Number(price.close)) as number[],
-            },
-          ]}
+          type="candlestick"
+          series={[{ data: chartData! }]}
           options={{
-            theme: {
-              mode: "dark",
-            },
-            chart: {
-              height: 300,
-              width: 500,
-              toolbar: {
-                show: false,
-              },
-              background: "transparent",
-            },
-            grid: { show: false },
-            stroke: {
-              curve: "smooth",
-              width: 4,
-            },
             yaxis: {
-              show: false,
+              tooltip: {
+                enabled: true,
+              },
+              labels: {
+                style: {},
+              },
             },
             xaxis: {
-              axisBorder: { show: false },
-              axisTicks: { show: false },
-              labels: { show: false },
               type: "datetime",
-              categories: data?.map((price) =>
-                new Date(Number(price.time_close) * 1000).toUTCString()
-              ),
-            },
-            fill: {
-              type: "gradient",
-              gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
-            },
-            colors: ["#0fbcf9"],
-            tooltip: {
-              y: {
-                formatter: (value) => `$ ${value.toFixed(2)}`,
+              labels: {
+                style: {},
               },
             },
+            colors: ["#6A82FB"],
           }}
         />
       )}
