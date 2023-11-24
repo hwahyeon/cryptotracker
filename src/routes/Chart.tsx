@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { fetchCoinHistory } from "../api";
+import { fetchCoinTickers, fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
 import LoadingBar from "../components/LoadingBar"
 
@@ -18,17 +18,22 @@ interface ChartProps {
   coinId: string;
 }
 function Chart({ coinId }: ChartProps) {
-  const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
-    fetchCoinHistory(coinId),
+  const { isLoading, data, isError } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
+  fetchCoinHistory(coinId),
     // {
     //   refetchInterval: 1000,
     // }
   );
 
+  console.log(data)
+
+
   return (
     <div>
       {isLoading ? (
         <LoadingBar />
+      ) : isError? (
+        <p>데이터 에러</p>
       ) : (
         <ApexChart
           type="line"
