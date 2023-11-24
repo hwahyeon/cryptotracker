@@ -6,8 +6,8 @@ import Price from "./Price";
 import { useQuery } from "react-query";
 import { Helmet } from "react-helmet";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
-import Navigator from "../components/Navigator"
-import LoadingBar from "../components/LoadingBar"
+import Navigator from "../components/Navigator";
+import LoadingBar from "../components/LoadingBar";
 
 const Title = styled.h1`
   font-size: 48px;
@@ -136,7 +136,7 @@ function Coin() {
   );
   const { isLoading: tickersLoading, data: tickerData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId!),
+    () => fetchCoinTickers(coinId!)
     // {
     //   refetchInterval: 5000,
     // }
@@ -188,11 +188,15 @@ function Coin() {
           </Overview>
 
           <Tabs>
-            <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
+            <Tab isActive={chartMatch ? true : false}>
+              <Link to={chartMatch ? `/${coinId}` : `/${coinId}/chart`}>
+                Chart
+              </Link>
             </Tab>
             <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
+              <Link to={priceMatch ? `/${coinId}` : `/${coinId}/price`}>
+                Price
+              </Link>
             </Tab>
           </Tabs>
 
