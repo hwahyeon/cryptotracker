@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useLocation, useParams, useMatch } from "react-router";
 import { Routes, Route, Link } from "react-router-dom";
 import styled from "styled-components";
@@ -21,7 +20,7 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 const Header = styled.header`
-  height: 15vh;
+  height: 10vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,13 +69,6 @@ const Tab = styled.span<{ isActive: boolean }>`
     display: block;
   }
 `;
-
-interface RouteParams {
-  coinId: string;
-}
-interface RouteState {
-  name: string;
-}
 
 interface InfoData {
   id: string;
@@ -150,26 +142,8 @@ function Coin() {
     // }
   );
 
-  /*
-  const [loading, setLoading] = useState(true);
-  const [info, setInfo] = useState<InfoData>();
-  const [priceInfo, setPriceInfo] = useState<PriceData>();
-
-  useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
-      setInfo(infoData);
-      setPriceInfo(priceData);
-      setLoading(false);
-    })();
-  }, [coinId]);*/
-
   const loading = infoLoading || tickersLoading;
+
   return (
     <Container>
       <Helmet>
@@ -189,26 +163,26 @@ function Coin() {
         <>
           <Overview>
             <OverviewItem>
-              <span>Rank:</span>
+              <span>Rank</span>
               <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Symbol:</span>
+              <span>Symbol</span>
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Price:</span>
+              <span>Price</span>
               <span>${tickerData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
-              <span>Total Suply:</span>
+              <span>Total Supply</span>
               <span>{tickerData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Max Supply:</span>
+              <span>Max Supply</span>
               <span>{tickerData?.max_supply}</span>
             </OverviewItem>
           </Overview>
