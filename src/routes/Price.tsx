@@ -1,7 +1,36 @@
 import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
-import LoadingBar from "../components/LoadingBar"
+import styled from "styled-components";
+import LoadingBar from "../components/LoadingBar";
 
+// styled-components
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9em;
+`;
+
+const StyledHeader = styled.th`
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 10px 15px;
+  border-bottom: 2px solid #ddd;
+`;
+
+const StyledRow = styled.tr`
+  &:nth-child(even) {
+    background-color: #f9f9f9;
+    color: black;
+  }
+`;
+
+const StyledCell = styled.td`
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+`;
+
+// TypeScript
 interface IHistorical {
   time_open: number;
   time_close: string;
@@ -16,14 +45,15 @@ interface IHistorical {
 interface ChartProps {
   coinId: string;
 }
+
 function Price({ coinId }: ChartProps) {
-  const { isLoading, isError, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
-  fetchCoinHistory(coinId),
-    // {
-    //   refetchInterval: 1000,
-    // }
+  const { isLoading, isError, data } = useQuery<IHistorical[]>(
+    ["ohlcv", coinId],
+    () => fetchCoinHistory(coinId),
+    {
+      refetchInterval: 1000,
+    }
   );
-  console.log('*', data)
 
   return (
     <div>
@@ -31,31 +61,42 @@ function Price({ coinId }: ChartProps) {
         <LoadingBar />
       ) : isError ? (
         <p>데이터 에러</p>
-      ) : (<table>
-        <tr>
-          <th>일자</th>
-          <th>종가</th>
-          <th>전일대비</th>
-          <th>거래량</th>
-        </tr>
-        {data?.slice(1).map((e, index) => { // 첫 번째 요소를 제외
-          const previousClose = data[index].close; // 현재 요소의 이전 요소 종가
-          const difference = e.close - previousClose;
-          
-          return (
-            <tr>
-              <td>
-                {new Date(Number(e.time_open) * 1000)
-                  .toString()
-                  .substring(4, 16)}
-              </td>
-              <td>{e.close}</td>
-              <td>{difference.toFixed(2)}</td>
-              <td>{e.volume}</td>
-            </tr>
-          );
-        })}
-      </table>
+      ) : (
+        <StyledTable>
+          <tr>
+            <StyledHeader>일자</StyledHeader>
+            <StyledHeader>종가</StyledHeader>
+            <StyledHeader>전일대비</StyledHeader>
+            <StyledHeader>거래량</StyledHeader>
+          </tr>
+          {data
+            ?.slice()
+            .sort((a, b) => b.time_open - a.time_open)
+            .map((e, index, sortedData) => {
+              if (index < sortedData.length - 1) {
+                const previousClose = sortedData[index + 1].close;
+                const difference = e.close - previousClose;
+
+                return (
+                  <StyledRow key={e.time_open}>
+                    <StyledCell>
+                      {new Date(Number(e.time_open) * 1000)
+                        .toString()
+                        .substring(4, 16)}
+                    </StyledCell>
+                    <StyledCell>{e.close}</StyledCell>
+                    <StyledCell
+                      style={{ color: difference < 0 ? "red" : "blue" }}
+                    >
+                      {difference.toFixed(2)}
+                    </StyledCell>
+                    <StyledCell>{e.volume}</StyledCell>
+                  </StyledRow>
+                );
+              }
+              return null;
+            })}
+        </StyledTable>
       )}
     </div>
   );
