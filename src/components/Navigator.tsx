@@ -23,6 +23,7 @@ const StyledButton = styled.button`
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    width: 50px;
 
     &:hover {
         background-color: rgba(0, 0, 0, 0.9);
@@ -46,10 +47,10 @@ const Navigator = (props: NavButtonProps) => {
 
     return (
         <ButtonContainer>
-            <StyledButton  onClick={handleDarkmodeButtonClick}>
+            <StyledButton onClick={handleDarkmodeButtonClick}>
                 <FontAwesomeIcon icon={isDark ? faMoon : faSun} />
             </StyledButton >
-            <StyledButton  onClick={handleHomeButtonClick}>
+            <StyledButton onClick={handleHomeButtonClick}>
                 <FontAwesomeIcon icon={faHome} />
             </StyledButton >
         </ButtonContainer>
