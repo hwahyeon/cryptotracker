@@ -23,7 +23,7 @@ const Container = styled.div`
 const Circle = styled.div<CircleProps>`
     position: absolute;
     animation: ${moveX} 1s ease-in-out alternate infinite;
-    background: #fff;
+    background: ${(props) => props.theme.loadingColor};
     border-radius: 50%;
     animation-delay: ${props => props.n * 0.1}s;
 
