@@ -9,7 +9,7 @@ This is the comprehensive web application for tracking market prices of cryptocu
 To start using CRYPTO TRACKER, simply visit the following URL:
 
 
-**[CRYPTO TRACKER Web Application](https://hwahyeon.github.io/reactjs-cryptotracker/)**
+**[CRYPTO TRACKER Web Application](https://hwahyeon.github.io/cryptotracker/)**
 
 ### Features
 - **Market Prices**: Stay updated with the latest market prices of a wide range of cryptocurrencies.
