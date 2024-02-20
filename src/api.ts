@@ -4,19 +4,19 @@ export function fetchCoins() {
   return fetch(`${BASE_URL}/coins`).then((response) => response.json());
 }
 
-export function fetchCoinInfo(coinId: string) {
+export function fetchCoinInfo(coinId: string | undefined) {
   return fetch(`${BASE_URL}/coins/${coinId}`).then((response) =>
     response.json()
   );
 }
 
-export function fetchCoinTickers(coinId: string) {
+export function fetchCoinTickers(coinId: string | undefined) {
   return fetch(`${BASE_URL}/tickers/${coinId}`).then((response) =>
     response.json()
   );
 }
 
-export function fetchCoinHistory(coinId: string) {
+export function fetchCoinHistory(coinId: string | undefined) {
   return fetch(
     `https://ohlcv-api.nomadcoders.workers.dev/?coinId=${coinId}`
   ).then((respons) => respons.json());
