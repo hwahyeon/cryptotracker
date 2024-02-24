@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
@@ -137,7 +137,7 @@ function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
   const [searchTerm, setSearchTerm] = useState("");
   const [visibleCoins, setVisibleCoins] = useState<ICoin[]>([]);
-  const loadMoreRef = useRef(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (data) {
@@ -166,7 +166,13 @@ function Coins() {
       (entries) => {
         if (entries[0].isIntersecting) {
           setVisibleCoins((prevCoins) => {
-            const nextCoins = data?.slice(prevCoins.length, prevCoins.length + 20) || [];
+            const isAllDataLoaded = prevCoins.length >= (data?.length ?? 0);
+            if (isAllDataLoaded) {
+              observer.unobserve(loadMoreRef.current as Element);
+              return prevCoins;
+            }
+            const nextCoins =
+              data?.slice(prevCoins.length, prevCoins.length + 20) || [];
             return [...prevCoins, ...nextCoins];
           });
         }
