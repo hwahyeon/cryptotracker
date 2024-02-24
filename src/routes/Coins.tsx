@@ -165,10 +165,10 @@ function Coins() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setVisibleCoins((prevCoins) => [
-            ...prevCoins,
-            ...(data?.slice(prevCoins.length, prevCoins.length + 20) || []),
-          ]);
+          setVisibleCoins((prevCoins) => {
+            const nextCoins = data?.slice(prevCoins.length, prevCoins.length + 20) || [];
+            return [...prevCoins, ...nextCoins];
+          });
         }
       },
       { threshold: 1 }
@@ -177,7 +177,7 @@ function Coins() {
       observer.observe(loadMoreRef.current);
     }
     return () => observer.disconnect();
-  }, [data]);
+  }, [visibleCoins.length, data]);
 
   return (
     <Container>
