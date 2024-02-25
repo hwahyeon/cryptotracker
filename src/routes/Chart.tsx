@@ -28,24 +28,24 @@ function Chart({ coinId }: ChartProps) {
   );
 
   const exceptData = data ?? [];
-  const chartData = exceptData?.map((e) => {
-    return {
-      x: new Date(e.time_close * 1000),
-      y: [
-        parseFloat(e.open),
-        parseFloat(e.high),
-        parseFloat(e.low),
-        parseFloat(e.close),
-      ],
-    };
-  });
+  const chartData = Array.isArray(exceptData)
+    ? exceptData.map((e) => ({
+        x: new Date(e.time_close * 1000),
+        y: [
+          parseFloat(e.open),
+          parseFloat(e.high),
+          parseFloat(e.low),
+          parseFloat(e.close),
+        ],
+      }))
+    : [];
 
   return (
     <div>
       {isLoading ? (
         <LoadingBar />
       ) : isError ? (
-        <p>데이터 에러</p>
+        <p>Data Error</p>
       ) : (
         <ApexChart
           type="candlestick"
