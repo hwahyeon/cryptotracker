@@ -81,7 +81,7 @@ const shimmer = keyframes`
 `;
 
 const SkeletonCoin = styled.li`
-  background-color: #eee;
+  background-color: #f0f0f0;
   border-radius: 15px;
   margin-bottom: 10px;
   display: flex;
@@ -101,7 +101,7 @@ const SkeletonCoin = styled.li`
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.6),
       transparent
     );
     animation: ${shimmer} 2s infinite;
@@ -111,7 +111,7 @@ const SkeletonCoin = styled.li`
 const SkeletonImage = styled.div`
   width: 35px;
   height: 35px;
-  background-color: #8b8a8a;
+  background-color: #d4d4d4;
   border-radius: 50%;
   margin-right: 10px;
 `;
@@ -119,7 +119,7 @@ const SkeletonImage = styled.div`
 const SkeletonText = styled.div`
   width: 100px;
   height: 16px;
-  background-color: #8b8a8a;
+  background-color: #d4d4d4;
 `;
 
 // interface for TypeScript
