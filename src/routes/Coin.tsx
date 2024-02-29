@@ -10,7 +10,7 @@ import Navigator from "../components/Navigator";
 import LoadingBar from "../components/LoadingBar";
 
 const Title = styled.h1`
-  font-size: 48px;
+  font-size: clamp(24px, 10vw, 48px); // Minimum of 24px, adjusts with screen width, maximum of 48px
   color: ${(props) => props.theme.accentColor};
 `;
 
