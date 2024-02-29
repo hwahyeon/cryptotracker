@@ -90,7 +90,7 @@ function Price({ coinId }: ChartProps) {
                 <StyledCell style={{ color: difference < 0 ? "red" : "blue" }}>
                   {difference.toFixed(2)}
                 </StyledCell>
-                <StyledCell>{e.volume}</StyledCell>
+                <StyledCell>{Number(e.volume).toFixed(2)}</StyledCell>
               </StyledRow>
             );
           })}
